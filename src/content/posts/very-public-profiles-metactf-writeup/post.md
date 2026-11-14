@@ -48,4 +48,4 @@ This is clearly a case of IDOR, where changing the profile ID leads to accessing
 - Manually visited every available profile using IDOR.
 - One of the profiles had this username: `you_are_now_a_1337_url_h4x0r`
 
-### That is our flag: `MetaCTF{you_are_now_a_1337_url_h4x0r}`
+<h3>That is our flag: <code>MetaCTF{you_are_now_a_1337_url_h4x0r}</code></h3>
