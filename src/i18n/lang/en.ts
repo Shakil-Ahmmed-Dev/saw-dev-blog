@@ -10,6 +10,7 @@ export default {
     search: "Search",
   },
   post: {
+    by: "by",
     publishedAt: "Published at",
     updatedAt: "Updated",
     sharePostIntro: "Share this post:",

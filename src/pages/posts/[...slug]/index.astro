@@ -15,6 +15,7 @@ import BackButton from "./_components/BackButton.astro";
 import BackToTopButton from "./_components/BackToTopButton.astro";
 import AdjacentPostNav from "./_components/AdjacentPostNav.astro";
 import PostToc from "./_components/PostToc.astro";
+import { useTranslations } from "@/i18n";
 import config from "@/config";
 
 export async function getStaticPaths() {
@@ -61,9 +62,11 @@ type Props = {
 
 const { post, prevPost, nextPost } = Astro.props;
 const locale = Astro.currentLocale ?? config.site.lang;
+const t = useTranslations(locale);
 
 const {
   title,
+  author,
   description,
   ogImage: initOgImage,
   canonicalURL,
@@ -106,6 +109,7 @@ const ogImage = ogImageUrl
   canonicalURL={canonicalURL}
   pubDatetime={pubDatetime}
   modDatetime={modDatetime}
+  author={author}
 >
   <Header />
 
@@ -123,12 +127,30 @@ const ogImage = ogImageUrl
       {title}
     </h1>
 
-    <div class="my-2 flex items-center gap-2">
+    <div class="my-2 flex flex-wrap items-center gap-2 text-sm sm:text-base text-muted-foreground">
+      <span class="flex items-center gap-1.5">
+        <span class="italic">{t.post.by}</span>
+        {
+          author === config.site.author && config.site.profile ? (
+            <a
+              href={config.site.profile}
+              class="text-foreground hover:text-accent font-medium underline-offset-4 hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {author}
+            </a>
+          ) : (
+            <span class="text-foreground font-medium">{author}</span>
+          )
+        }
+      </span>
+      <span aria-hidden="true">|</span>
       <Datetime {pubDatetime} {modDatetime} {timezone} size="lg" />
       <span
         aria-hidden="true"
         class:list={[
-          "text-muted-foreground max-sm:hidden",
+          "max-sm:hidden",
           { hidden: !config.features.editPost?.enabled || hideEditPost },
         ]}
       >

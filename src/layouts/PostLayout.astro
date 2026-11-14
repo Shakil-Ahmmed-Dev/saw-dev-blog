@@ -9,12 +9,20 @@ type Props = {
   canonicalURL?: string;
   pubDatetime?: Date;
   modDatetime?: Date | null;
+  author?: string;
 };
 
 const { site } = config;
 
-const { title, description, ogImage, canonicalURL, pubDatetime, modDatetime } =
-  Astro.props;
+const {
+  title,
+  description,
+  ogImage,
+  canonicalURL,
+  pubDatetime,
+  modDatetime,
+  author = site.author,
+} = Astro.props;
 
 const structuredData = {
   "@context": "https://schema.org",
@@ -26,8 +34,8 @@ const structuredData = {
   author: [
     {
       "@type": "Person",
-      name: site.author,
-      ...(site.profile && { url: site.profile }),
+      name: author,
+      ...(author === site.author && site.profile ? { url: site.profile } : {}),
     },
   ],
 };
@@ -40,7 +48,7 @@ const structuredDataJson = JSON.stringify(structuredData).replace(
 );
 ---
 
-<Layout {title} {description} {ogImage} {canonicalURL}>
+<Layout {title} {description} {ogImage} {canonicalURL} {author}>
   <Fragment slot="head">
     <!-- Override og:type for article pages -->
     <meta property="og:type" content="article" />
