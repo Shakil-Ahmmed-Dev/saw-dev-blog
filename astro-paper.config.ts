@@ -2,7 +2,7 @@ import { defineAstroPaperConfig } from "./src/types/config";
 
 export default defineAstroPaperConfig({
   site: {
-    url: "https://saw-dev-blog-test.vercel.app/",
+    url: "https://blog.saw-dev.site/",
     title: "Shakil Ahmmed",
     description: "CSE Undergraduate, Full Stack Web Developer",
     author: "Shakil Ahmmed",
@@ -23,7 +23,7 @@ export default defineAstroPaperConfig({
     showBackButton: true,
     editPost: {
       enabled: true,
-      url: "https://github.com/Shakil-Ahmmed-Dev/saw-dev-blog-test/edit/main/",
+      url: "https://github.com/Shakil-Ahmmed-Dev/saw-dev-blog/edit/main/",
     },
     search: "pagefind",
     toc: true,
