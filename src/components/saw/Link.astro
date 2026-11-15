@@ -1,0 +1,20 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import LinkButton from "../LinkButton.astro";
+
+type Props = {
+  own?: boolean;
+} & HTMLAttributes<"a">;
+
+const {
+  own = false,
+  class: className,
+  target = own ? "_self" : "_blank",
+  rel = own ? undefined : "noopener noreferrer",
+  ...attrs
+} = Astro.props;
+---
+
+<LinkButton target={target} rel={rel} class={className} {...attrs}>
+  <slot />
+</LinkButton>
