@@ -7,8 +7,7 @@ tags:
   - cyber-security
   - collection
   - resource
-description:
-  A collection of blog posts regarding Cyber Security, CTF, Bug Bounty, Pentesting, etc. These blogs contains explainers, writeups, guides, etc.
+description: A collection of blog posts regarding Cyber Security, CTF, Bug Bounty, Pentesting, etc. These blogs contains explainers, writeups, guides, etc.
 ---
 
 # Writeups

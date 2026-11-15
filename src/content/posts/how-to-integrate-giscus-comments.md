@@ -87,7 +87,8 @@ _AstroPaper_ uses Astro's [client-side routing](https://docs.astro.build/en/guid
   data-repo-id="[ENTER REPO ID HERE]"
   data-category="[ENTER CATEGORY NAME HERE]"
   data-category-id="[ENTER CATEGORY ID HERE]"
-  data-astro-rerun></script>
+  data-astro-rerun
+></script>
 
 <hr class="my-8 border-dashed" />
 ```

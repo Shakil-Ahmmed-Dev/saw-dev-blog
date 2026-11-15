@@ -78,9 +78,9 @@ const rssHref = getAssetPath("rss.xml");
     <meta property="og:image:secure_url" content={socialImageURL} />
     <meta
       property="og:image:type"
-      content={socialImageURL.pathname.endsWith(".png")
-        ? "image/png"
-        : "image/jpeg"}
+      content={
+        socialImageURL.pathname.endsWith(".png") ? "image/png" : "image/jpeg"
+      }
     />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
@@ -107,14 +107,9 @@ const rssHref = getAssetPath("rss.xml");
     <!-- Extra head content injected by child layouts (e.g. JSON-LD, article meta) -->
     <slot name="head" />
 
-    {
-      site.googleVerification && (
-        <meta
-          name="google-site-verification"
-          content={site.googleVerification}
-        />
-      )
-    }
+    {site.googleVerification && (
+      <meta name="google-site-verification" content={site.googleVerification} />
+    )}
 
     <!--
       Inline FOUC-prevention script: sets data-theme on <html> before
@@ -137,9 +132,7 @@ const rssHref = getAssetPath("rss.xml");
 
     <ClientRouter />
   </head>
-  <body
-    class="bg-background font-app text-foreground selection:bg-accent/75 selection:text-accent-foreground flex min-h-svh flex-col"
-  >
+  <body class="bg-background font-app text-foreground selection:bg-accent/75 selection:text-accent-foreground flex min-h-svh flex-col">
     <slot />
     <script>
       import "@/scripts/theme";

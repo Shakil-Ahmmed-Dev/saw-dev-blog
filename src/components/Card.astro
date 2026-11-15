@@ -21,50 +21,9 @@ const postUrl = getPostUrl(id, filePath, Astro.currentLocale);
     "hover:shadow-sm",
   ]}
 >
-  {
-    coverImage ? (
-      <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between sm:gap-6">
-        <div class="min-w-0 flex-1">
-          <a
-            href={postUrl}
-            class:list={[
-              "text-accent inline-block text-lg font-medium",
-              "decoration-dashed underline-offset-4 hover:underline",
-              "focus-visible:no-underline focus-visible:underline-offset-0",
-            ]}
-          >
-            <Heading transition:name={toTransitionName(id)}>{title}</Heading>
-          </a>
-          <Datetime {...props} class="my-1.5" />
-          <p>{description}</p>
-        </div>
-        <a
-          href={postUrl}
-          class="group border-border order-first shrink-0 overflow-hidden rounded-md border sm:order-last"
-          tabindex="-1"
-          aria-hidden="true"
-        >
-          <div class="bg-muted h-44 w-full overflow-hidden sm:h-28 sm:w-44">
-            {typeof coverImage.src === "string" ? (
-              <img
-                src={coverImage.src}
-                alt={coverImage.alt}
-                class="h-full w-full object-cover transition-transform duration-200 group-hover:scale-105"
-                loading="lazy"
-                decoding="async"
-              />
-            ) : (
-              <Image
-                src={coverImage.src}
-                alt={coverImage.alt}
-                class="h-full w-full object-cover transition-transform duration-200 group-hover:scale-105"
-              />
-            )}
-          </div>
-        </a>
-      </div>
-    ) : (
-      <>
+  {coverImage ? (
+    <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between sm:gap-6">
+      <div class="min-w-0 flex-1">
         <a
           href={postUrl}
           class:list={[
@@ -77,7 +36,46 @@ const postUrl = getPostUrl(id, filePath, Astro.currentLocale);
         </a>
         <Datetime {...props} class="my-1.5" />
         <p>{description}</p>
-      </>
-    )
-  }
+      </div>
+      <a
+        href={postUrl}
+        class="group border-border order-first shrink-0 overflow-hidden rounded-md border sm:order-last"
+        tabindex="-1"
+        aria-hidden="true"
+      >
+        <div class="bg-muted h-44 w-full overflow-hidden sm:h-28 sm:w-44">
+          {typeof coverImage.src === "string" ? (
+            <img
+              src={coverImage.src}
+              alt={coverImage.alt}
+              class="h-full w-full object-cover transition-transform duration-200 group-hover:scale-105"
+              loading="lazy"
+              decoding="async"
+            />
+          ) : (
+            <Image
+              src={coverImage.src}
+              alt={coverImage.alt}
+              class="h-full w-full object-cover transition-transform duration-200 group-hover:scale-105"
+            />
+          )}
+        </div>
+      </a>
+    </div>
+  ) : (
+    <>
+      <a
+        href={postUrl}
+        class:list={[
+          "text-accent inline-block text-lg font-medium",
+          "decoration-dashed underline-offset-4 hover:underline",
+          "focus-visible:no-underline focus-visible:underline-offset-0",
+        ]}
+      >
+        <Heading transition:name={toTransitionName(id)}>{title}</Heading>
+      </a>
+      <Datetime {...props} class="my-1.5" />
+      <p>{description}</p>
+    </>
+  )}
 </li>
