@@ -42,6 +42,8 @@ This is clearly a case of IDOR, where changing the profile ID leads to accessing
 ![Burpsuite Intruder Attacks](./assets/img/burpsuite_intruder_attacks.png)
 
 - None of them contained MetaCTF.
+> [!TIP]
+> Probably the website displays the flag without `MetaCTF`; we'll have to add that at the end.
 
 ## Attempt 2 (What worked)
 
