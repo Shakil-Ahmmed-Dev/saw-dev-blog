@@ -38,6 +38,7 @@ export default {
   footer: {
     copyright: "Copyright",
     allRightsReserved: "All rights reserved.",
+    buyMeATea: "Buy me a tea",
   },
   pages: {
     tagTitle: "Tag",

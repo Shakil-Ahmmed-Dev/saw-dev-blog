@@ -37,6 +37,7 @@ export interface UIStrings {
   footer: {
     copyright: string;
     allRightsReserved: string;
+    buyMeATea: string;
   };
   pages: {
     tagTitle: string;

@@ -1,0 +1,37 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import IconTea from "@/assets/icons/IconTea.svg";
+import { useTranslations } from "@/i18n";
+
+type Props = {
+  url?: string;
+  text?: string;
+} & HTMLAttributes<"a">;
+
+const t = useTranslations(Astro.currentLocale);
+
+const {
+  url = "https://chakhawan.com/saw_dev",
+  text = t.footer.buyMeATea ?? "Buy me a tea",
+  class: className,
+  ...attrs
+} = Astro.props;
+---
+
+<a
+  href={url}
+  target="_blank"
+  rel="noopener noreferrer"
+  class:list={[
+    "group inline-flex items-center gap-2 rounded-full border border-border px-3.5 py-1.5 text-xs font-medium transition-all duration-200 sm:text-sm",
+    "bg-muted/40 text-foreground hover:border-accent/40 hover:bg-muted hover:text-accent",
+    className,
+  ]}
+  {...attrs}
+>
+  <IconTea
+    class="size-4.5 stroke-current transition-transform duration-200 group-hover:rotate-12 sm:size-5"
+    aria-hidden="true"
+  />
+  <span>{text}</span>
+</a>
