@@ -5,6 +5,7 @@
   "compilerOptions": {
     "paths": {
       "@/*": ["./src/*"],
+      "@/posts/*": ["./src/content/posts/*"],
       "@/astro-paper.config": ["./astro-paper.config"]
     }
   }

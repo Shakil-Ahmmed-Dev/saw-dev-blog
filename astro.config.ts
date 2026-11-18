@@ -20,6 +20,10 @@ import {
   inlineTocDeprecation,
   rehypeInlineToc,
 } from "./src/utils/rehypeInlineToc";
+import {
+  postLinksIntegration,
+  rehypePostLinks,
+} from "./src/utils/rehypePostLinks";
 import config from "./astro-paper.config";
 
 export default defineConfig({
@@ -31,6 +35,7 @@ export default defineConfig({
         config.features?.showArchives !== false || !/\/archives\/?$/.test(page),
     }),
     inlineTocDeprecation(),
+    postLinksIntegration({ siteTimezone: config.site.timezone }),
   ],
   i18n: {
     locales: ["en"],
@@ -49,6 +54,7 @@ export default defineConfig({
         rehypeInlineToc,
         rehypeCallouts,
         rehypeTableWrapper,
+        rehypePostLinks,
       ],
     }),
     shikiConfig: {
