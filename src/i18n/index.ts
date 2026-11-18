@@ -22,7 +22,7 @@ export function useTranslations(locale: string = "en"): ResolvedStrings {
   const t = translations[locale] ?? translations["en"];
   return {
     ...t,
-    post: { tableOfContents: "Table of contents", ...t.post },
+    post: { tableOfContents: "Table of contents", draft: "Draft", ...t.post },
     a11y: { skipTableOfContents: "Skip table of contents", ...t.a11y },
   };
 }

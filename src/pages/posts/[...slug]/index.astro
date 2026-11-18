@@ -4,6 +4,7 @@ import PostLayout from "@/layouts/PostLayout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
 import Datetime from "@/components/Datetime.astro";
+import DraftBadge from "@/components/DraftBadge.astro";
 import Tag from "@/components/Tag.astro";
 import { getPostSlug, getPostUrl } from "@/utils/getPostPaths";
 import { getSortedPosts } from "@/utils/getSortedPosts";
@@ -74,9 +75,12 @@ const {
   modDatetime,
   timezone,
   tags,
+  draft,
   hideEditPost,
   hideToc,
 } = post.data;
+
+const isDevDraft = import.meta.env.DEV && Boolean(draft);
 
 const { Content, headings } = await render(post);
 const tocHeadings = config.features.toc && !hideToc ? headings : [];
@@ -128,6 +132,12 @@ const ogImage = ogImageUrl
     </h1>
 
     <div class="my-2 flex flex-wrap items-center gap-2 text-sm sm:text-base text-muted-foreground">
+      {isDevDraft && (
+        <>
+          <DraftBadge />
+          <span aria-hidden="true">|</span>
+        </>
+      )}
       <span class="flex items-center gap-1.5">
         <span class="italic">{t.post.by}</span>
         {author === config.site.author && config.site.profile ? (

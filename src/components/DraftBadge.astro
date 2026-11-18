@@ -1,0 +1,23 @@
+---
+import config from "@/config";
+import { useTranslations } from "@/i18n";
+
+type Props = {
+  class?: string;
+};
+
+const { class: className = "" } = Astro.props;
+const locale = Astro.currentLocale ?? config.site.lang;
+const t = useTranslations(locale);
+---
+
+{import.meta.env.DEV && (
+  <span
+    class:list={[
+      "inline-flex items-center rounded-md border border-amber-600/35 bg-amber-500/15 px-2 py-0.5 text-xs font-semibold tracking-wide text-amber-800 uppercase dark:border-amber-400/40 dark:bg-amber-400/15 dark:text-amber-300 leading-none",
+      className,
+    ]}
+  >
+    {t.post.draft}
+  </span>
+)}

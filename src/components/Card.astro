@@ -4,6 +4,7 @@ import { Image } from "astro:assets";
 import { getPostUrl } from "@/utils/getPostPaths";
 import { toTransitionName } from "@/utils/toTransitionName";
 import Datetime from "./Datetime.astro";
+import DraftBadge from "./DraftBadge.astro";
 
 type Props = {
   variant?: "h2" | "h3";
@@ -11,7 +12,8 @@ type Props = {
 
 const { variant: Heading = "h2", id, data, filePath } = Astro.props;
 
-const { title, description, coverImage, ...props } = data;
+const { title, description, coverImage, draft, ...props } = data;
+const isDevDraft = import.meta.env.DEV && Boolean(draft);
 const postUrl = getPostUrl(id, filePath, Astro.currentLocale);
 ---
 
@@ -19,6 +21,7 @@ const postUrl = getPostUrl(id, filePath, Astro.currentLocale);
   class:list={[
     "border-border hover:border-accent/60 my-4 rounded-lg border p-5 transition-colors sm:p-6",
     "hover:shadow-sm",
+    { "border-dashed": isDevDraft },
   ]}
 >
   {coverImage ? (
@@ -34,7 +37,10 @@ const postUrl = getPostUrl(id, filePath, Astro.currentLocale);
         >
           <Heading transition:name={toTransitionName(id)}>{title}</Heading>
         </a>
-        <Datetime {...props} class="my-1.5" />
+        <div class="my-1.5 flex flex-wrap items-center gap-x-3 gap-y-1">
+          {isDevDraft && <DraftBadge />}
+          <Datetime {...props} />
+        </div>
         <p>{description}</p>
       </div>
       <a
@@ -74,7 +80,10 @@ const postUrl = getPostUrl(id, filePath, Astro.currentLocale);
       >
         <Heading transition:name={toTransitionName(id)}>{title}</Heading>
       </a>
-      <Datetime {...props} class="my-1.5" />
+      <div class="my-1.5 flex flex-wrap items-center gap-x-3 gap-y-1">
+        {isDevDraft && <DraftBadge />}
+        <Datetime {...props} />
+      </div>
       <p>{description}</p>
     </>
   )}

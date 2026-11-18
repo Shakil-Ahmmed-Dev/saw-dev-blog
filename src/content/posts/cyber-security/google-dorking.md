@@ -11,7 +11,7 @@ tags:
 description: Learn how Google Dorking works, how security professionals use search operators for authorized reconnaissance, and how to reduce accidental exposure.
 ---
 
-Google Dorking, also called Google hacking, is the use of advanced search operators to find specific information indexed by a search engine. It is a useful [reconnaissance](/posts/cyber-security/reconnaissance-for-defenders/) technique when it is performed on systems you own or within an explicit scope. It does not bypass access controls or change files on a website.
+Google Dorking, also called Google hacking, is the use of advanced search operators to find specific information indexed by a search engine. It is a useful [reconnaissance](./reconnaissance-for-defenders.md) technique when it is performed on systems you own or within an explicit scope. It does not bypass access controls or change files on a website.
 
 ## Why Security Teams Use It
 
