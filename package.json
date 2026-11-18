@@ -13,7 +13,9 @@
     "astro": "astro",
     "format:check": "prettier --check .",
     "format": "prettier --write .",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "post": "node scripts/new-post.mjs",
+    "page": "node scripts/new-page.mjs"
   },
   "dependencies": {
     "@astrojs/markdown-remark": "^7.3.7",
@@ -36,6 +38,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.12",
+    "@clack/prompts": "^1.9.0",
     "@pagefind/default-ui": "^1.6.0",
     "@shikijs/transformers": "^4.6.0",
     "@tailwindcss/typography": "^0.5.20",
