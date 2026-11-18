@@ -143,4 +143,101 @@
       @apply border-border rounded-sm border px-0.5 py-px;
     }
   }
+
+  /* ===== Mermaid Diagrams ===== */
+  .mermaid-diagram {
+    @apply border-border bg-background my-7 overflow-hidden rounded-md border;
+
+    .mermaid-header {
+      @apply border-border bg-muted/35 flex items-center justify-between gap-3 border-b px-3 py-1.5 text-xs;
+    }
+
+    .mermaid-label {
+      @apply text-muted-foreground font-medium tracking-wide lowercase select-none;
+    }
+
+    .mermaid-toggle {
+      @apply border-border bg-muted/60 inline-flex items-center rounded border p-0.5;
+    }
+
+    .mermaid-toggle-btn {
+      @apply text-muted-foreground hover:text-foreground focus-visible:outline-accent cursor-pointer rounded-xs px-2 py-0.5 text-xs leading-4 font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-dashed;
+
+      &[aria-pressed="true"] {
+        @apply bg-background text-foreground shadow-2xs;
+      }
+    }
+
+    .mermaid-panel-diagram {
+      @apply outline-accent overflow-x-auto p-4 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-dashed sm:p-6;
+
+      &:not([hidden]) {
+        @apply flex;
+      }
+
+      & > .mermaid-diagram-svg {
+        @apply mx-auto h-auto flex-none;
+      }
+    }
+
+    .mermaid-panel-source {
+      @apply relative;
+
+      pre.astro-code {
+        @apply my-0! rounded-none border-0 pr-12 outline-none;
+      }
+    }
+
+    .mermaid-copy-btn {
+      @apply border-border bg-background/85 text-muted-foreground hover:border-accent hover:text-foreground focus-visible:outline-accent absolute end-3 top-3 z-10 inline-flex size-8 cursor-pointer items-center justify-center rounded border backdrop-blur-xs transition-colors focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-dashed;
+
+      .mermaid-icon-check {
+        @apply hidden;
+      }
+
+      &[data-copied="true"] {
+        @apply border-accent text-accent;
+
+        .mermaid-icon-copy {
+          @apply hidden;
+        }
+
+        .mermaid-icon-check {
+          @apply block;
+        }
+      }
+    }
+
+    .mermaid-error-banner {
+      @apply border-b border-red-500/40 bg-red-500/10 px-3 py-2 text-xs text-red-700 dark:text-red-300;
+    }
+
+    .mermaid-caption {
+      @apply border-border text-muted-foreground my-0! border-t px-4 py-2 text-center text-sm opacity-100;
+    }
+  }
+
+  .mermaid-diagram-svg {
+    --_text: var(--fg);
+    --_text-sec: var(--muted, color-mix(in srgb, var(--fg) 60%, var(--bg)));
+    --_text-muted: var(--muted, color-mix(in srgb, var(--fg) 40%, var(--bg)));
+    --_text-faint: color-mix(in srgb, var(--fg) 25%, var(--bg));
+    --_line: var(--line, color-mix(in srgb, var(--fg) 50%, var(--bg)));
+    --_arrow: var(--accent, color-mix(in srgb, var(--fg) 85%, var(--bg)));
+    --_node-fill: var(--surface, color-mix(in srgb, var(--fg) 3%, var(--bg)));
+    --_node-stroke: var(--border, color-mix(in srgb, var(--fg) 20%, var(--bg)));
+    --_group-fill: var(--bg);
+    --_group-hdr: color-mix(in srgb, var(--fg) 5%, var(--bg));
+    --_inner-stroke: color-mix(in srgb, var(--fg) 12%, var(--bg));
+    --_key-badge: color-mix(in srgb, var(--fg) 10%, var(--bg));
+
+    text,
+    .mono {
+      font-family: var(--font-app), monospace;
+    }
+
+    &[role="button"] {
+      @apply focus-visible:outline-accent cursor-zoom-in rounded-xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-dashed;
+    }
+  }
 }

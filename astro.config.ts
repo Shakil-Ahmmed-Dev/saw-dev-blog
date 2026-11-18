@@ -15,11 +15,13 @@ import {
   transformerNotationWordHighlight,
 } from "@shikijs/transformers";
 import { transformerFileName } from "./src/utils/transformers/fileName";
+import { transformerMermaidCaption } from "./src/utils/transformers/mermaidCaption";
 import { rehypeTableWrapper } from "./src/utils/rehypeTableWrapper";
 import {
   inlineTocDeprecation,
   rehypeInlineToc,
 } from "./src/utils/rehypeInlineToc";
+import { mermaidIntegration, rehypeMermaid } from "./src/utils/rehypeMermaid";
 import {
   postLinksIntegration,
   rehypePostLinks,
@@ -35,6 +37,7 @@ export default defineConfig({
         config.features?.showArchives !== false || !/\/archives\/?$/.test(page),
     }),
     inlineTocDeprecation(),
+    mermaidIntegration(),
     postLinksIntegration({ siteTimezone: config.site.timezone }),
   ],
   i18n: {
@@ -54,6 +57,7 @@ export default defineConfig({
         rehypeInlineToc,
         rehypeCallouts,
         rehypeTableWrapper,
+        rehypeMermaid,
         rehypePostLinks,
       ],
     }),
@@ -62,6 +66,7 @@ export default defineConfig({
       defaultColor: false,
       wrap: false,
       transformers: [
+        transformerMermaidCaption(),
         transformerFileName({ style: "v2", hideDot: false }),
         transformerNotationHighlight(),
         transformerNotationWordHighlight(),

@@ -260,7 +260,9 @@ const ogImage = ogImageUrl
 
   function attachCopyButtons() {
     const copyButtonLabel = "Copy";
-    const codeBlocks = Array.from(document.querySelectorAll("pre"));
+    const codeBlocks = Array.from(
+      document.querySelectorAll("pre:not([data-mermaid-source])")
+    );
 
     for (const codeBlock of codeBlocks) {
       const wrapper = document.createElement("div");
@@ -303,7 +305,7 @@ const ogImage = ogImageUrl
   }
   attachCopyButtons();
 
-  /** Accessible image lightbox for article images. */
+  /** Accessible lightbox for article images and Mermaid diagrams. */
   function initLightbox() {
     const article = document.getElementById("article");
     if (!article) return;
@@ -329,35 +331,125 @@ const ogImage = ogImageUrl
           image.alt ? `Zoom image: ${image.alt}` : "Zoom image"
         );
       }
+
+      const diagrams = Array.from(
+        article.querySelectorAll("svg.mermaid-diagram-svg")
+      );
+      for (const diagram of diagrams) {
+        const caption = diagram
+          .closest(".mermaid-diagram")
+          ?.querySelector(".mermaid-caption")
+          ?.textContent?.trim();
+        diagram.setAttribute("role", "button");
+        diagram.setAttribute("tabindex", "0");
+        diagram.setAttribute("aria-haspopup", "dialog");
+        diagram.setAttribute(
+          "aria-label",
+          caption ? `Zoom diagram: ${caption}` : "Zoom diagram"
+        );
+      }
     });
 
-    function open(src, alt, trigger) {
+    function cloneDiagramForLightbox(svg) {
+      const clone = svg.cloneNode(true);
+      clone.removeAttribute("role");
+      clone.removeAttribute("tabindex");
+      clone.removeAttribute("aria-haspopup");
+      clone.removeAttribute("aria-label");
+
+      // Prevent duplicate SVG marker/clipPath IDs against the inline diagram.
+      for (const el of clone.querySelectorAll("[id]")) {
+        el.setAttribute("id", `${el.getAttribute("id")}-lb`);
+      }
+      for (const el of clone.querySelectorAll("*")) {
+        for (const attr of Array.from(el.attributes)) {
+          if (attr.value.includes("url(#")) {
+            el.setAttribute(
+              attr.name,
+              attr.value.replace(/url\(#([^)]+)\)/g, "url(#$1-lb)")
+            );
+          } else if (
+            (attr.name === "href" || attr.name === "xlink:href") &&
+            attr.value.startsWith("#")
+          ) {
+            el.setAttribute(attr.name, `${attr.value}-lb`);
+          }
+        }
+      }
+
+      const vb = clone.viewBox?.baseVal;
+      const intrinsicW =
+        vb && vb.width > 0
+          ? vb.width
+          : Number(clone.getAttribute("width")) || 600;
+      const intrinsicH =
+        vb && vb.height > 0
+          ? vb.height
+          : Number(clone.getAttribute("height")) || 400;
+
+      const maxW = window.innerWidth * 0.86;
+      const maxH = window.innerHeight * 0.82;
+      const fitScale = Math.min(maxW / intrinsicW, maxH / intrinsicH, 1.5);
+      const renderW = Math.round(intrinsicW * fitScale);
+      const renderH = Math.round(intrinsicH * fitScale);
+
+      clone.setAttribute("width", String(renderW));
+      clone.setAttribute("height", String(renderH));
+      clone.style.display = "block";
+      clone.style.maxWidth = "100%";
+      clone.style.maxHeight = "82dvh";
+
+      const stage = document.createElement("div");
+      stage.className =
+        "border-border bg-background max-h-[90dvh] max-w-[90dvw] cursor-default rounded-lg border p-4 shadow-xl transition-transform duration-100 ease-out motion-reduce:transition-none data-[zoom=drag]:cursor-grabbing data-[zoom=drag]:transition-none data-[zoom=in]:cursor-grab sm:p-6";
+      stage.appendChild(clone);
+      return stage;
+    }
+
+    function open(target) {
       if (overlay) return;
-      lastFocused = trigger ?? document.activeElement;
+      lastFocused = target ?? document.activeElement;
+
+      const isSvg = target.tagName.toLowerCase() === "svg";
+      const label = isSvg
+        ? target
+            .closest(".mermaid-diagram")
+            ?.querySelector(".mermaid-caption")
+            ?.textContent?.trim() || ""
+        : target.alt || "";
+      const kind = isSvg ? "Diagram" : "Image";
 
       overlay = document.createElement("div");
       overlay.setAttribute("role", "dialog");
       overlay.setAttribute("aria-modal", "true");
       overlay.setAttribute(
         "aria-label",
-        alt ? `Image preview: ${alt}` : "Image preview"
+        label ? `${kind} preview: ${label}` : `${kind} preview`
       );
       overlay.className =
         "fixed inset-0 z-50 flex cursor-zoom-out items-center justify-center bg-black/70 backdrop-blur-sm opacity-0 transition-opacity duration-200 motion-reduce:transition-none";
 
       const closeButton = document.createElement("button");
       closeButton.type = "button";
-      closeButton.setAttribute("aria-label", "Close image preview");
+      closeButton.setAttribute(
+        "aria-label",
+        `Close ${kind.toLowerCase()} preview`
+      );
       closeButton.className =
         "absolute end-4 top-4 z-1 flex size-11 items-center justify-center rounded bg-black/50 text-3xl leading-none text-white";
       closeButton.innerHTML = "&#10005;";
       closeButton.addEventListener("click", close);
 
-      const image = document.createElement("img");
-      image.src = src;
-      image.alt = "";
-      image.className =
-        "max-h-[90dvh] max-w-[90dvw] cursor-default object-contain transition-transform duration-100 ease-out motion-reduce:transition-none data-[zoom=drag]:cursor-grabbing data-[zoom=drag]:transition-none data-[zoom=in]:cursor-grab";
+      let image;
+      if (isSvg) {
+        image = cloneDiagramForLightbox(target);
+      } else {
+        image = document.createElement("img");
+        image.src = target.currentSrc || target.src;
+        image.alt = "";
+        image.className =
+          "max-h-[90dvh] max-w-[90dvw] cursor-default object-contain transition-transform duration-100 ease-out motion-reduce:transition-none data-[zoom=drag]:cursor-grabbing data-[zoom=drag]:transition-none data-[zoom=in]:cursor-grab";
+      }
 
       overlay.append(closeButton, image);
       overlay.addEventListener("click", e => {
@@ -645,13 +737,15 @@ const ogImage = ogImageUrl
     }
 
     function triggerFromEvent(e) {
-      const image = e.target.closest("img");
-      if (!image || !article.contains(image) || image.closest("a")) return null;
-      return image;
+      const target = e.target.closest("img, svg.mermaid-diagram-svg");
+      if (!target || !article.contains(target) || target.closest("a")) {
+        return null;
+      }
+      return target;
     }
 
-    function activate(image) {
-      open(image.currentSrc || image.src, image.alt, image);
+    function activate(target) {
+      open(target);
     }
 
     article.addEventListener("click", e => {
