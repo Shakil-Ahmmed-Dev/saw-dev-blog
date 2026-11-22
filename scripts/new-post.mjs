@@ -93,7 +93,7 @@ async function runQuickMode(cliTitle, rootDir, siteDefaults) {
 
   const target = resolvePostTarget({
     rootDir,
-    folder: "",
+    folder: "_drafts",
     slug,
     layout: "single",
     format: "md",
